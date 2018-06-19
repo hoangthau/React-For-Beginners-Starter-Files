@@ -5,10 +5,16 @@ import Order from './Order';
 import Inventory from './Inventory';
 
 class App extends React.Component {
+  state = {
+    fishes: {}
+  };
 
-  addFish = (event) => {
-
-  }
+  addFish = fish => {
+    console.log(fish);
+    let fishes = { ...this.state.fishes };
+    fishes[`fish-${Date.now()}`] = fish;
+    this.setState({ fishes: fishes });
+  };
 
   render() {
     return (
