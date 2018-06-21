@@ -22,9 +22,9 @@ class Order extends React.Component {
     const { fishes, order } = this.props;
     const orderIds = Object.keys(order);
     const total = orderIds.reduce((prevTotal, key) => {
-        const fish = fishes[key];
+        const fish = fishes[key] || {};
         const count = order[key];
-        return prevTotal + (count * fish.price || 0);
+        return prevTotal + (count * fish.price || 0); 
     }, 0)
 
     return (
