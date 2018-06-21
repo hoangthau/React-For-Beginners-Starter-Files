@@ -5,6 +5,7 @@ import Order from './Order';
 import Inventory from './Inventory';
 import Fish from './Fish';
 import sampleFishes from '../sample-fishes';
+import base from '../base';
 
 class App extends React.Component {
   state = {
@@ -12,7 +13,18 @@ class App extends React.Component {
     order: {}
   };
 
-  addFish = (fish) => {
+  componentWillMount() {
+    this.ref = base.syncState(`${this.props.match.params.storeId}/fishes`, {
+      context: this,
+      state: 'fishes'
+    });
+  }
+
+  componentWillUnmount() {
+    base.removeBinding(this.ref);
+  }
+
+  addFish = fish => {
     let fishes = { ...this.state.fishes };
     fishes[`fish-${Date.now()}`] = fish;
     this.setState({ fishes: fishes });
@@ -22,11 +34,11 @@ class App extends React.Component {
     this.setState({ fishes: sampleFishes });
   };
 
-  addToOrder = (key) => {
-    let order = {...this.state.order};
+  addToOrder = key => {
+    let order = { ...this.state.order };
     order[key] = order[key] + 1 || 1;
-    this.setState({ order: order});
-  }
+    this.setState({ order: order });
+  };
 
   render() {
     return (
@@ -35,7 +47,12 @@ class App extends React.Component {
           <Header tagline="Fresh Seafood Market" />
           <ul className="list-of-fishes">
             {Object.keys(this.state.fishes).map(key => (
-              <Fish key={key} index={key} details={this.state.fishes[key]} addToOrder={this.addToOrder} />
+              <Fish
+                key={key}
+                index={key}
+                details={this.state.fishes[key]}
+                addToOrder={this.addToOrder}
+              />
             ))}
           </ul>
         </div>
