@@ -12,12 +12,21 @@ class Inventory extends React.Component {
 		updateFish: PropTypes.func,
 		removeFish: PropTypes.func,
 		loadSamples: PropTypes.func,
-		fished: PropTypes.object
+		fished: PropTypes.object,
+		storeId: PropTypes.string
 	};
 
 	state = {
 		uid: null,
 		owner: null
+	};
+
+	componentDidMount = () => {
+		firebase.auth().onAuthStateChanged(user => {
+			if (user) {
+				this.authHandler({ user });
+			}
+		});
 	};
 
 	handleChange = (e, key) => {
@@ -86,12 +95,28 @@ class Inventory extends React.Component {
 			.then(this.authHandler);
 	};
 
-	authHandler = authData => {
-		console.log(authData);
-	};
+	authHandler = async authData => {
+		const store = await base.fetch(this.props.storeId, { context: this });
+		if (!store.owner) {
+			await base.post(`${this.props.storeId}/owner`, {
+				data: authData.user.uid
+			});
+		}
+
+		this.setState({
+			uid: authData.user.uid,
+			owner: store.owner || authData.user.uid
+		});
+  };
+  
+  logOut = async () => {
+    console.log('Loging out!');
+    await firebase.auth().signOut();
+    this.setState({uid: null});
+  }
 
 	render() {
-		const logoutButton = <button>Log Out!</button>;
+		const logoutButton = <button onClick={this.logOut}>Log Out!</button>;
 		if (!this.state.uid) {
 			return <Login authenticate={this.authenticate} />;
 		}
@@ -108,6 +133,7 @@ class Inventory extends React.Component {
 		return (
 			<div>
 				<h2>Inventory</h2>
+        {logoutButton}
 				{Object.keys(this.props.fishes).map(this.renderInventory)}
 				<AddFishForm addFish={this.props.addFish} />
 				<button onClick={this.props.loadSamples}>
