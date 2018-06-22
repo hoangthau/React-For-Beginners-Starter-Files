@@ -9,6 +9,7 @@ class Order extends React.Component {
     order: PropTypes.object,
     removeOrder: PropTypes.func
   };
+  
   renderOrder = key => {
     const fish = this.props.fishes[key];
     const count = this.props.order[key];
