@@ -1,4 +1,5 @@
 export function formatPrice(cents) {
+  //master changes
   return (cents / 100).toLocaleString("en-US", {
     style: "currency",
     currency: "USD"
