@@ -12,7 +12,7 @@ export function rando(arr) {
 }
 
 export function slugify(text) {
-  //master change
+  //master change 2
   return text
     .toString()
     .toLowerCase()
