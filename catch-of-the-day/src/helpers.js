@@ -1,6 +1,6 @@
 export function formatPrice(cents) {
-  //master changes 3
-  //dev change 4
+  //master changes 1
+  //master changes 2
   return (cents / 100).toLocaleString("en-US", {
     style: "currency",
     currency: "USD"
@@ -8,7 +8,8 @@ export function formatPrice(cents) {
 }
 
 export function rando(arr) {
-  //feature 3
+  //feature 1
+  //feature 2
   //feature 3
   return arr[Math.floor(Math.random() * arr.length)];
 }
