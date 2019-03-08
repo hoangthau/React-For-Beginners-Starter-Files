@@ -9,8 +9,7 @@ export function formatPrice(cents) {
 
 export function rando(arr) {
   //feature 1
-  //feature 2
-  //feature 3
+  //feature 2  
   //feature 3
   return arr[Math.floor(Math.random() * arr.length)];
 }
